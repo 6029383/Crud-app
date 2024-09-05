@@ -1,0 +1,23 @@
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+
+  a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    background-color: $primary-color;
+    color: $light-text;
+    text-decoration: none;
+    border-radius: $border-radius;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: lighten($primary-color, 10%);
+    }
+
+    &.active {
+      background-color: $secondary-color;
+    }
+  }
+}

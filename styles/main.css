@@ -1,0 +1,251 @@
+/* Variables */
+:root {
+  --primary-color: #333;
+  --secondary-color: #555;
+  --background-color: #f4f4f4;
+  --text-color: #333;
+  --light-text: #fff;
+  --font-family: Arial, sans-serif;
+  --border-radius: 5px;
+}
+
+/* Global styles */
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+main {
+  padding: 2rem;
+  margin-bottom: 60px;
+}
+
+/* Header styles */
+header {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-align: center;
+  padding: 1rem;
+}
+
+header nav {
+  margin-top: 1rem;
+}
+
+header nav a {
+  color: var(--light-text);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
+}
+
+header nav a:hover {
+  background-color: #777;
+}
+
+/* Post grid styles */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.post-card {
+  background-color: var(--light-text);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+}
+
+.post-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.post-card h2 {
+  padding: 1rem;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.post-card a {
+  display: block;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.post-card a:hover {
+  background-color: #555;
+}
+
+/* Pagination styles */
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #555;
+}
+
+.pagination a.active {
+  background-color: var(--secondary-color);
+}
+
+/* Footer styles */
+footer {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Formulier stijlen */
+.form-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--light-text);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #555;
+}
+
+/* Dashboard stijlen */
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dashboard h2 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  background-color: var(--light-text);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-list li h3 {
+  margin-top: 0;
+}
+
+.post-actions {
+  margin-top: 0.5rem;
+}
+
+.post-actions a {
+  margin-right: 0.5rem;
+}
+
+/* Berichtgeving stijlen */
+.message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Responsieve aanpassingen */
+@media (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-container {
+    max-width: 100%;
+    margin: 1rem;
+  }
+
+  header nav a {
+    display: block;
+    margin: 0.5rem 0;
+  }
+}
