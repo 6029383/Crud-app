@@ -1,12 +1,13 @@
 /* Variables */
 :root {
-  --primary-color: #333;
-  --secondary-color: #555;
-  --background-color: #f4f4f4;
-  --text-color: #333;
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --background-color: #ecf0f1;
+  --text-color: #34495e;
   --light-text: #fff;
-  --font-family: Arial, sans-serif;
-  --border-radius: 5px;
+  --font-family: 'Roboto', Arial, sans-serif;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Global styles */
@@ -20,47 +21,70 @@ body {
 }
 
 main {
-  padding: 2rem;
-  margin-bottom: 60px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
 }
 
 /* Header styles */
 header {
   background-color: var(--primary-color);
   color: var(--light-text);
-  text-align: center;
-  padding: 1rem;
+  padding: 1rem 2rem;
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 header nav {
-  margin-top: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 header nav a {
   color: var(--light-text);
   text-decoration: none;
   padding: 0.5rem 1rem;
-  margin: 0 0.5rem;
-  background-color: var(--secondary-color);
   border-radius: var(--border-radius);
   transition: background-color 0.3s ease;
+  font-weight: 500;
 }
 
 header nav a:hover {
-  background-color: #777;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Footer styles */
+footer {
+  display: none;
 }
 
 /* Post grid styles */
 .post-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
 
 .post-card {
   background-color: var(--light-text);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: var(--box-shadow);
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -79,6 +103,7 @@ header nav a:hover {
   padding: 1rem;
   margin: 0;
   font-size: 1.2rem;
+  color: var(--secondary-color);
 }
 
 .post-card a {
@@ -87,12 +112,12 @@ header nav a:hover {
   background-color: var(--primary-color);
   color: var(--light-text);
   text-decoration: none;
-  padding: 0.5rem;
+  padding: 0.75rem;
   transition: background-color 0.3s ease;
 }
 
 .post-card a:hover {
-  background-color: #555;
+  background-color: #2980b9;
 }
 
 /* Pagination styles */
@@ -113,59 +138,51 @@ header nav a:hover {
 }
 
 .pagination a:hover {
-  background-color: #555;
+  background-color: #2980b9;
 }
 
 .pagination a.active {
   background-color: var(--secondary-color);
 }
 
-/* Footer styles */
-footer {
-  background-color: var(--primary-color);
-  color: var(--light-text);
-  text-align: center;
-  padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-/* Formulier stijlen */
+/* Form styles */
 .form-container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: var(--light-text);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: var(--box-shadow);
 }
 
 .form-container h2 {
   margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
+  color: var(--secondary-color);
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
+  font-size: 1rem;
 }
 
 .btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   background-color: var(--primary-color);
   color: var(--light-text);
   text-decoration: none;
@@ -173,22 +190,26 @@ footer {
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem;
 }
 
 .btn:hover {
-  background-color: #555;
+  background-color: #2980b9;
 }
 
-/* Dashboard stijlen */
+/* Dashboard styles */
 .dashboard {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: var(--light-text);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .dashboard h2 {
-  margin-bottom: 1rem;
-  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
 }
 
 .post-list {
@@ -197,26 +218,69 @@ footer {
 }
 
 .post-list li {
-  background-color: var(--light-text);
+  background-color: #f8f9fa;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .post-list li h3 {
   margin-top: 0;
+  color: var(--secondary-color);
 }
 
 .post-actions {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
-.post-actions a {
+.post-actions a,
+.post-actions button {
   margin-right: 0.5rem;
 }
 
-/* Berichtgeving stijlen */
+/* User info styles */
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  object-fit: cover;
+}
+
+/* Table styles for user management */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* Message styles */
 .message {
   padding: 1rem;
   margin-bottom: 1rem;
@@ -226,26 +290,133 @@ footer {
 .message.success {
   background-color: #d4edda;
   color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
 .message.error {
   background-color: #f8d7da;
   color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
-/* Responsieve aanpassingen */
+/* Responsive styles */
 @media (max-width: 768px) {
+  header nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header nav a {
+    margin: 0.5rem 0;
+  }
+  
   .post-grid {
     grid-template-columns: 1fr;
   }
-
+  
   .form-container {
     max-width: 100%;
     margin: 1rem;
   }
+}
 
-  header nav a {
+/* Textarea styles */
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  resize: vertical;
+  font-size: 1rem;
+}
+
+/* Full post styles */
+.post-full {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--light-text);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+}
+
+.post-full h2 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.post-meta span {
+    margin-right: 1rem;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+.post-content {
+    line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+    .post-full {
+        padding: 1rem;
+    }
+}
+
+/* Dropdown styles */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--light-text);
+    min-width: 160px;
+    box-shadow: var(--box-shadow);
+    z-index: 1;
+    border-radius: var(--border-radius);
+}
+
+.user-dropdown:hover .user-dropdown-content {
     display: block;
-    margin: 0.5rem 0;
-  }
+}
+
+.user-dropdown-content a {
+    color: var(--text-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.user-dropdown-content a:hover {
+    background-color: var(--background-color);
+}
+
+/* Back to home button */
+.back-to-home {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.back-to-home:hover {
+    background-color: #2980b9;
 }

@@ -6,17 +6,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt = $pdo->prepare("SELECT users.*, roles.name as role_name FROM users JOIN roles ON users.role_id = roles.id WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role_id'] = $user['role_id'];
-        header("Location: dashboard.php");
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role_name'];
+        header("Location: index.php");
         exit();
     } else {
-        $error = "Ongeldige inloggegevens";
+        $error = "Ongeldige gebruikersnaam of wachtwoord";
     }
 }
 ?>
@@ -26,17 +27,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inloggen</title>
+    <title>Inloggen - Mijn Blog</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Inloggen</h1>
-    <?php if (isset($error)) echo "<p>$error</p>"; ?>
-    <form method="post">
-        <input type="text" name="username" placeholder="Gebruikersnaam" required>
-        <input type="password" name="password" placeholder="Wachtwoord" required>
-        <button type="submit">Inloggen</button>
-    </form>
-    <a href="register.php">Nog geen account? Registreer</a>
+    <header>
+        <div class="header-content">
+            <h1>Mijn Blog</h1>
+            <nav>
+                <a href="index.php">Home</a>
+                <a href="login.php">Inloggen</a>
+                <a href="register.php">Registreren</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="form-container">
+            <h2>Inloggen</h2>
+            <?php if (isset($error)): ?>
+                <p class="error"><?php echo $error; ?></p>
+            <?php endif; ?>
+            <form action="login.php" method="post">
+                <div class="form-group">
+                    <label for="username">Gebruikersnaam:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Wachtwoord:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Inloggen</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

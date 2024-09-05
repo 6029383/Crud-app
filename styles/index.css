@@ -1,0 +1,75 @@
+/* Post grid styles */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.post-card {
+  background-color: var(--light-text);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+}
+
+.post-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.post-card h2 {
+  padding: 1rem;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.post-card a {
+  display: block;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.post-card a:hover {
+  background-color: #555;
+}
+
+/* Pagination styles */
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #555;
+}
+
+.pagination a.active {
+  background-color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+}

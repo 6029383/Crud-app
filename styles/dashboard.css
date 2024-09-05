@@ -1,0 +1,35 @@
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dashboard h2 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  background-color: var(--light-text);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-list li h3 {
+  margin-top: 0;
+}
+
+.post-actions {
+  margin-top: 0.5rem;
+}
+
+.post-actions a {
+  margin-right: 0.5rem;
+}

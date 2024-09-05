@@ -26,26 +26,41 @@ $posts = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mijn Blog</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>Mijn Blog</h1>
-        <nav>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="dashboard.php">Dashboard</a>
-                <a href="logout.php">Uitloggen</a>
-            <?php else: ?>
-                <a href="login.php">Inloggen</a>
-                <a href="register.php">Registreren</a>
-            <?php endif; ?>
-        </nav>
+        <div class="header-content">
+            <h1>Mijn Blog</h1>
+            <nav>
+                <a href="index.php">Home</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="dashboard.php">Dashboard</a>
+                    <?php if ($_SESSION['role'] == 'Eigenaar' || $_SESSION['role'] == 'Admin'): ?>
+                        <a href="user_management.php">Gebruikers</a>
+                    <?php endif; ?>
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <img src="https://picsum.photos/40" alt="Profielfoto" class="avatar">
+                            <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                        </div>
+                        <div class="user-dropdown-content">
+                            <a href="logout.php">Uitloggen</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php">Inloggen</a>
+                    <a href="register.php">Registreren</a>
+                <?php endif; ?>
+            </nav>
+        </div>
     </header>
     
     <main>
         <div class="post-grid">
             <?php foreach ($posts as $post): ?>
                 <div class="post-card">
-                    <img src="<?php echo htmlspecialchars($post['thumbnail']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+                    <img src="https://picsum.photos/300/200?random=<?php echo $post['id']; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
                     <h2><?php echo htmlspecialchars($post['title']); ?></h2>
                     <a href="view_post.php?id=<?php echo $post['id']; ?>">Lees meer</a>
                 </div>
@@ -58,9 +73,5 @@ $posts = $stmt->fetchAll();
             <?php endfor; ?>
         </div>
     </main>
-    
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> Mijn Blog</p>
-    </footer>
 </body>
 </html>

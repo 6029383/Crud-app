@@ -2,36 +2,40 @@
 session_start();
 require_once 'config.php';
 
+// Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header('Location: login.php');
     exit();
 }
 
-$id = $_GET['id'];
-$is_admin = isAdmin($pdo, $_SESSION['user_id']);
-
-if ($is_admin) {
-    $stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ?");
-    $stmt->execute([$id]);
-} else {
-    $stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ? AND user_id = ?");
-    $stmt->execute([$id, $_SESSION['user_id']]);
+// Controleer of er een post ID is meegegeven
+if (!isset($_GET['id'])) {
+    header('Location: dashboard.php');
+    exit();
 }
 
+$post_id = $_GET['id'];
+
+// Haal de post op
+$stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ?");
+$stmt->execute([$post_id]);
 $post = $stmt->fetch();
 
-if (!$post) {
-    die("Post niet gevonden of geen toestemming om te bewerken");
+// Controleer of de post bestaat en of de gebruiker rechten heeft om deze te bewerken
+if (!$post || ($_SESSION['role'] != 'Eigenaar' && $post['user_id'] != $_SESSION['user_id'])) {
+    header('Location: dashboard.php');
+    exit();
 }
 
+// Verwerk het formulier als het is verzonden
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $content = $_POST['content'];
 
     $stmt = $pdo->prepare("UPDATE posts SET title = ?, content = ? WHERE id = ?");
-    $stmt->execute([$title, $content, $id]);
+    $stmt->execute([$title, $content, $post_id]);
 
-    header("Location: dashboard.php");
+    header('Location: dashboard.php');
     exit();
 }
 ?>
@@ -41,16 +45,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogpost bewerken</title>
+    <title>Bewerk Post - Mijn Blog</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Blogpost bewerken</h1>
-    <form method="post">
-        <input type="text" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required>
-        <textarea name="content" required><?php echo htmlspecialchars($post['content']); ?></textarea>
-        <button type="submit">Bijwerken</button>
-    </form>
-    <a href="dashboard.php">Terug naar dashboard</a>
+    <header>
+        <div class="header-content">
+            <h1>Mijn Blog</h1>
+            <nav>
+                <a href="index.php">Home</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="dashboard.php">Dashboard</a>
+                    <?php if ($_SESSION['role'] == 'Eigenaar' || $_SESSION['role'] == 'Admin'): ?>
+                        <a href="user_management.php">Gebruikers</a>
+                    <?php endif; ?>
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <img src="https://picsum.photos/40" alt="Profielfoto" class="avatar">
+                            <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                        </div>
+                        <div class="user-dropdown-content">
+                            <a href="logout.php">Uitloggen</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php">Inloggen</a>
+                    <a href="register.php">Registreren</a>
+                <?php endif; ?>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="form-container">
+            <h2>Bewerk Post</h2>
+            <form action="edit_post.php?id=<?php echo $post_id; ?>" method="post">
+                <div class="form-group">
+                    <label for="title">Titel:</label>
+                    <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Inhoud:</label>
+                    <textarea id="content" name="content" rows="10" required><?php echo htmlspecialchars($post['content']); ?></textarea>
+                </div>
+                <button type="submit" class="btn">Opslaan</button>
+            </form>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; <?php echo date('Y'); ?> Mijn Blog</p>
+    </footer>
 </body>
 </html>
