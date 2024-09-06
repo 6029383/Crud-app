@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once 'classes/Database.php';
+require_once 'classes/Post.php';
+
+$db = new Database();
+$post = new Post($db);
 
 // Controleer of er een post ID is meegegeven
 if (!isset($_GET['id'])) {
@@ -9,17 +13,14 @@ if (!isset($_GET['id'])) {
 }
 
 $post_id = $_GET['id'];
-
-// Haal de post op
-$stmt = $pdo->prepare("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.id = ?");
-$stmt->execute([$post_id]);
-$post = $stmt->fetch();
+$post_data = $post->getPostById($post_id);
 
 // Als de post niet bestaat, redirect naar de homepage
-if (!$post) {
+if (!$post_data) {
     header('Location: index.php');
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +28,7 @@ if (!$post) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($post['title']); ?> - Mijn Blog</title>
+    <title><?php echo htmlspecialchars($post_data['title']); ?> - Mijn Blog</title>
     <link rel="stylesheet" href="styles/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -62,14 +63,14 @@ if (!$post) {
     <main>
         <a href="index.php" class="back-to-home">Terug naar home</a>
         <article class="post-full">
-            <h2><?php echo htmlspecialchars($post['title']); ?></h2>
+            <h2><?php echo htmlspecialchars($post_data['title']); ?></h2>
             <div class="post-meta">
-                <span>Door: <?php echo htmlspecialchars($post['username']); ?></span>
-                <span>Geplaatst op: <?php echo date('d-m-Y H:i', strtotime($post['created_at'])); ?></span>
+                <span>Door: <?php echo htmlspecialchars($post_data['username']); ?></span>
+                <span>Geplaatst op: <?php echo date('d-m-Y H:i', strtotime($post_data['created_at'])); ?></span>
             </div>
-            <img src="https://picsum.photos/800/400?random=<?php echo $post['id']; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+            <img src="https://picsum.photos/800/400?random=<?php echo $post_data['id']; ?>" alt="<?php echo htmlspecialchars($post_data['title']); ?>" class="post-image">
             <div class="post-content">
-                <?php echo nl2br(htmlspecialchars($post['content'])); ?>
+                <?php echo nl2br(htmlspecialchars($post_data['content'])); ?>
             </div>
         </article>
     </main>

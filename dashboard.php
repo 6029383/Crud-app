@@ -1,6 +1,12 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once 'classes/Database.php';
+require_once 'classes/Post.php';
+require_once 'classes/User.php';
+
+$db = new Database();
+$post = new Post($db);
+$user = new User($db);
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
@@ -9,29 +15,20 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Haal de posts op afhankelijk van de gebruikersrol
-if ($_SESSION['role'] == 'Eigenaar') {
-    $stmt = $pdo->query("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id ORDER BY created_at DESC");
-} elseif ($_SESSION['role'] == 'Admin') {
-    $stmt = $pdo->prepare("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.user_id = ? OR users.role_id = 3 ORDER BY created_at DESC");
-    $stmt->execute([$_SESSION['user_id']]);
-} else {
-    $stmt = $pdo->prepare("SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC");
-    $stmt->execute([$_SESSION['user_id']]);
-}
-$posts = $stmt->fetchAll();
+$posts = $post->getPostsByUserRole($_SESSION['user_id'], $_SESSION['role']);
 
 // Verwijder post
 if (isset($_POST['delete_post'])) {
     $post_id = $_POST['delete_post'];
     $post_user_id = $_POST['post_user_id'];
 
-    if ($_SESSION['role'] == 'Eigenaar' || ($_SESSION['role'] == 'Admin' && $post_user_id == $_SESSION['user_id']) || ($_SESSION['role'] == 'Gebruiker' && $post_user_id == $_SESSION['user_id'])) {
-        $stmt = $pdo->prepare("DELETE FROM posts WHERE id = ?");
-        $stmt->execute([$post_id]);
+    if ($user->canDeletePost($_SESSION['role'], $post_user_id, $_SESSION['user_id'])) {
+        $post->deletePost($post_id);
         header("Location: dashboard.php");
         exit();
     }
 }
+
 ?>
 
 <!DOCTYPE html>

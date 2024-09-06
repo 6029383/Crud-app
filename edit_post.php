@@ -1,6 +1,12 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once 'classes/Database.php';
+require_once 'classes/Post.php';
+require_once 'classes/User.php';
+
+$db = new Database();
+$post = new Post($db);
+$user = new User($db);
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
@@ -15,14 +21,10 @@ if (!isset($_GET['id'])) {
 }
 
 $post_id = $_GET['id'];
-
-// Haal de post op
-$stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ?");
-$stmt->execute([$post_id]);
-$post = $stmt->fetch();
+$post_data = $post->getPostById($post_id);
 
 // Controleer of de post bestaat en of de gebruiker rechten heeft om deze te bewerken
-if (!$post || ($_SESSION['role'] != 'Eigenaar' && $post['user_id'] != $_SESSION['user_id'])) {
+if (!$post_data || !$user->canEditPost($_SESSION['role'], $post_data['user_id'], $_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit();
 }
@@ -32,12 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    $stmt = $pdo->prepare("UPDATE posts SET title = ?, content = ? WHERE id = ?");
-    $stmt->execute([$title, $content, $post_id]);
-
+    $post->updatePost($post_id, $title, $content);
     header('Location: dashboard.php');
     exit();
 }
+
+// ... (rest van de HTML-code blijft hetzelfde)
 ?>
 
 <!DOCTYPE html>

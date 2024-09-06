@@ -1,25 +1,23 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once 'classes/Database.php';
+require_once 'classes/User.php';
+
+$db = new Database();
+$user = new User($db);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT users.*, roles.name as role_name FROM users JOIN roles ON users.role_id = roles.id WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role_name'];
+    if ($user->login($username, $password)) {
         header("Location: index.php");
         exit();
     } else {
         $error = "Ongeldige gebruikersnaam of wachtwoord";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
